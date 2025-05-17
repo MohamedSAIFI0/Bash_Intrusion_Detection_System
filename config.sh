@@ -17,10 +17,10 @@ ALERT_COOLDOWN=60             # Délai entre 2 alertes pour une même IP
 
 # === Méthode d’alerte ===
 # Options possibles : wall, email
-ALERT_METHOD="wall"
+#ALERT_METHOD="wall"
 
 # Pour email (si activé)
-#EMAIL_TO="admin@example.com"
+EMAIL_TO="admin@example.com"
 
 # === Pare-feu utilisé ===
 # Options possibles : ufw, iptables, none
