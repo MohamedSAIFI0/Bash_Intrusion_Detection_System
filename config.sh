@@ -1,43 +1,47 @@
 #!/bin/bash
-# Fichier de configuration pour le système IDS
+# Configuration du système de détection d'intrusion
 
-# === Chemins des répertoires et fichiers ===
-LOG_DIR="$SCRIPT_DIR/logs"                      # Répertoire où stocker les journaux
-REPORT_DIR="$SCRIPT_DIR/reports"                # Répertoire des rapports
-LOG_FILE="$LOG_DIR/intrusion.log"               # Fichier de log d'intrusions
-REPORT_FILE="$REPORT_DIR/weekly_report.txt"     # Rapport hebdomadaire
+# Chemins des fichiers de logs à surveiller
+LOG_AUTH="/var/log/auth.log"
+LOG_SYSLOG="/var/log/syslog"
+LOG_MESSAGES="/var/log/messages"
+LOG_NGINX="/var/log/nginx/access.log"
 
-# === Fichier de log système à surveiller ===
-SYSLOG_FILE="/var/log/auth.log"                 # Peut être adapté selon le système
+# Chemins des fichiers de l'IDS
+LOG_DIR="$(dirname "$(readlink -f "$0")")/logs"
+INTRUSION_LOG="$LOG_DIR/intrusion.log"
+REPORT_DIR="$(dirname "$(readlink -f "$0")")/reports"
+WEEKLY_REPORT="$REPORT_DIR/weekly_report.txt"
 
-# === Seuils de détection ===
-MAX_FAILED_ATTEMPTS=5         # Nombre d’échecs max autorisé avant alerte
-MONITOR_INTERVAL=30           # Temps (en secondes) entre chaque scan des logs
-ALERT_COOLDOWN=60             # Délai entre 2 alertes pour une même IP
+# Configuration des seuils d'alerte
+SSH_FAIL_THRESHOLD=5          # Nombre d'échecs de connexion SSH avant alerte
+SCAN_THRESHOLD=10             # Nombre de scans de ports avant alerte
+BRUTE_FORCE_THRESHOLD=15      # Nombre de tentatives de brute force avant alerte
+TIME_WINDOW=300               # Fenêtre de temps en secondes pour considérer des événements comme liés (5 minutes)
 
-# === Méthode d’alerte ===
-# Options possibles : wall, email
-ALERT_METHOD="wall"
+# Configuration des alertes
+ENABLE_EMAIL=false            # Activer/désactiver les alertes par email
+EMAIL_RECIPIENT="saifimsc@gmail.com"  # Adresse email pour les alertes
+ENABLE_WALL=true              # Activer/désactiver les messages wall
 
-# Pour email (si activé)
-#EMAIL_TO="admin@example.com"
+# Configuration du blocage automatique
+ENABLE_AUTO_BLOCK=false       # Activer/désactiver le blocage automatique
+BLOCK_DURATION=3600           # Durée du blocage en secondes (1 heure)
+USE_UFW=false                 # Utiliser UFW au lieu d'iptables
 
-# === Pare-feu utilisé ===
-# Options possibles : ufw, iptables, none
-FIREWALL_METHOD="ufw"
+# Configuration de l'interface utilisateur
+UI_TOOL="whiptail"            # "whiptail" ou "dialog"
+TERMINAL_WIDTH=80             # Largeur du terminal pour l'affichage
+TERMINAL_HEIGHT=24            # Hauteur du terminal pour l'affichage
 
-# === Adresse IP locales (jamais bloquées) ===
-WHITELIST_IPS=("127.0.0.1" "192.168.1.1")
+# Configuration du daemon
+CHECK_INTERVAL=5              # Intervalle de vérification en secondes en mode daemon
 
-# === Regex de détection d'intrusions (ligne à rechercher dans le fichier log) ===
-# Exemples : tentatives SSH échouées
-PATTERNS=(
-  "Failed password for"
-  "authentication failure;"
-  "Invalid user"
-)
+# Regex pour la détection d'événements suspects
+SSH_FAIL_PATTERN="Failed password for .* from .* port"
+ROOT_ACCESS_PATTERN="Failed password for root from .* port"
+PORT_SCAN_PATTERN="SRC=.* DST=.* PROTO=(TCP|UDP) .* DPT="
+BRUTE_FORCE_PATTERN="Failed password for .* from .* port .* ssh"
 
-# === Autres paramètres optionnels ===
-ENABLE_LOG_ROTATION=true         # Rotation automatique du log
-MAX_LOG_SIZE=1000000             # Taille max du fichier log en octets avant rotation
-
+# Activer le mode debug (plus de détails dans les logs)
+DEBUG=false
