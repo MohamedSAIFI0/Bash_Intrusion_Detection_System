@@ -13,6 +13,10 @@ INTRUSION_LOG="$LOG_DIR/intrusion.log"
 REPORT_DIR="$(dirname "$(readlink -f "$0")")/reports"
 WEEKLY_REPORT="$REPORT_DIR/weekly_report.txt"
 
+# Créer les répertoires si non existants
+mkdir -p "$LOG_DIR"
+mkdir -p "$REPORT_DIR"
+
 # Configuration des seuils d'alerte
 SSH_FAIL_THRESHOLD=5          # Nombre d'échecs de connexion SSH avant alerte
 SCAN_THRESHOLD=10             # Nombre de scans de ports avant alerte
@@ -45,3 +49,25 @@ BRUTE_FORCE_PATTERN="Failed password for .* from .* port .* ssh"
 
 # Activer le mode debug (plus de détails dans les logs)
 DEBUG=false
+
+# Fichier principal de log pour le système de monitoring
+LOG_FILE="$LOG_DIR/bash-ids.log"
+
+# Fichier pour stocker le PID du processus de surveillance
+PID_FILE="/var/run/bash-ids.pid"
+
+# Patterns à utiliser pour la surveillance en temps réel dans monitor.sh
+PATTERNS=(
+    "$SSH_FAIL_PATTERN"
+    "$ROOT_ACCESS_PATTERN"
+    "$BRUTE_FORCE_PATTERN"
+)
+
+# Commande de blocage (utilisée si ENABLE_AUTO_BLOCK est true)
+BLOCK_COMMAND="iptables -A INPUT -s"
+
+# Liste des IP bannies - harmonisée avec monitor.sh
+BLOCKED_IPS_FILE="$LOG_DIR/blocked_ips.txt"
+
+# Gardons l'ancienne variable pour compatibilité
+BANNED_IP_LIST="$BLOCKED_IPS_FILE"

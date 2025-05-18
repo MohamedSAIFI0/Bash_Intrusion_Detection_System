@@ -1,0 +1,22 @@
+=== ÉTAT DE L'IDS BASH ===
+Date de vérification: Sun May 18 13:41:23 +01 2025
+
+STATUT: ACTIF (PID: 7198)
+En fonctionnement depuis: Sun May 18 13:41:12 2025
+
+Alertes récentes: 0
+0
+IPs actuellement bloquées: 0
+
+Fichiers logs surveillés:
+  - /var/log/auth.log (OK)
+  - /var/log/syslog (OK)
+  - /var/log/messages (INTROUVABLE)
+  - /var/log/nginx/access.log (INTROUVABLE)
+
+Configuration:
+  - Alertes par email: false
+  - Alertes wall: true
+  - Blocage automatique: false
+
+================

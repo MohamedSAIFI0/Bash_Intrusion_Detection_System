@@ -1,0 +1,12 @@
+=== Rapport d'analyse des logs de sécurité ===
+Fichier analysé: /var/log/auth.log
+Période: du 2025-05-17 à aujourd'hui
+Date d'analyse: Sun May 18 13:41:18 +01 2025
+
+=== Résumé des activités suspectes ===
+- Tentatives de connexion SSH échouées: 0
+- Tentatives d'accès root: 0
+- Tentatives de scan de ports: 0
+- Tentatives d'attaque par force brute: 0
+
+=== IPs les plus suspectes ===
