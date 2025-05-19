@@ -156,7 +156,6 @@ generate_alert_summary() {
     echo "=== RÉSUMÉ DES ALERTES (depuis $start_date) ===" > "$output_file"
     echo "Généré le: $(date)" >> "$output_file"
     echo "" >> "$output_file"
-    
     # Compter les alertes par type
     echo "ALERTES PAR TYPE:" >> "$output_file"
     grep -e "\[ALERTE\]" "$INTRUSION_LOG" | awk -F']' '{print $2}' | sort | uniq -c | sort -nr >> "$output_file"
@@ -219,6 +218,5 @@ clean_old_alerts() {
     mv "$temp_file" "$INTRUSION_LOG"
     
     echo "[INFO] Nettoyage terminé. Les alertes de plus de $days jours ont été supprimées." >> "$INTRUSION_LOG"
-    
     return 0
 }
