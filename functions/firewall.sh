@@ -1,10 +1,8 @@
 #!/bin/bash
 # Fonctions pour la gestion du pare-feu
-
 # Source le fichier de configuration
 SCRIPT_DIR="$(dirname "$(dirname "$(readlink -f "$0")")")"
 source "$SCRIPT_DIR/config.sh"
-
 # Fonction pour vérifier si les outils de pare-feu sont disponibles
 check_firewall_tools() {
     local tools_available=true
